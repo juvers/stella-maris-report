@@ -1,14 +1,26 @@
 import Head from "next/head";
-import { useState, useRef, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 const subjects = ["Mathematics", "English Language", "CRK", "Basic Science"];
+
+const subjects2 = [
+  { name: "Mathematics", score: 0 },
+  { name: "English Language", score: 0 },
+  { name: "CRK", score: 0 },
+  { name: "Basic Science", score: 0 },
+];
 const cols = 9;
 export default function Home() {
   const [state, setState] = useState(0);
   const ref = useRef(null);
+  // const ref2 = useRef();
 
-  // useEffect(() => {
-  //   console.log(ref.current.children[0].children[3].type);
-  // });
+  // useEffect(() => console.log("Ref2: ", ref2?.current));
 
   const addData = (e) => {
     setState(() => state + Number(e.target.value));
@@ -74,6 +86,84 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <hr />
+      {/* <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <table className="table table-bordered ">
+              <thead className="table-light">
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col" style={{ width: "20%" }}></th>
+                  <th scope="col">Project</th>
+                  <th scope="col">Weekly</th>
+                  <th scope="col">Notes</th>
+                  <th scope="col">First C.A.</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Grade</th>
+                  <th scope="col">Sign.</th>
+                </tr>
+              </thead>
+              <thead>
+                <tr>
+                  <th scope="col">S.No</th>
+                  <th scope="col" style={{ width: "20%" }}>
+                    Subject
+                  </th>
+                  <th scope="col">5</th>
+                  <th scope="col">3</th>
+                  <th scope="col">2</th>
+                  <th scope="col">10</th>
+                  <th scope="col">20</th>
+                  <th scope="col">A1 - F9</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {subjects2.map((x, i) => (
+                  <tr key={`lol${x}`}>
+                    <th scope="row">{i + 1}</th>
+                    <td>{x.name}</td>
+                    {Array.from({ length: 4 }, (_, i) => (
+                      <MapSubjects
+                        ref={ref2}
+                        key={`mapped ${x.name}`}
+                        data={x}
+                      />
+                    ))}
+                    <td>{state}</td>
+                    <td>grade here</td>
+                    <td>sign here</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {JSON.stringify(ref2)}
+          <button onClick={() => console.log("Button clicked: ", ref2)}>
+            Get State
+          </button>
+        </div>
+      </div> */}
     </div>
   );
 }
+
+// eslint-disable-next-line react/display-name
+// const MapSubjects = forwardRef(({}, ref) => {
+//   const [state2, setState] = useState(5);
+//   const itemRef = useRef();
+//   useImperativeHandle(ref, () => ({
+//     state2,
+//   }));
+//   const getScore = () => {
+//     setState(() => state2 + Number(itemRef.current.firstChild.value));
+//     console.log("Val: ", Number(itemRef.current.firstChild.value));
+//   };
+//   // useEffect(() => console.log(itemRef.current.innerText), []);
+//   return (
+//     <td ref={itemRef}>
+//       <input type="text" onChange={getScore} />
+//     </td>
+//   );
+// });
