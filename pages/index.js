@@ -67,19 +67,20 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {subjects.map((x, i) => (
-                  <tr key={x}>
-                    <th scope="row">{i + 1}</th>
-                    <td>{x}</td>
-                    {Array.from({ length: 4 }, (_, i) => (
-                      <td key={`content${i}`}>
-                        <input type="text" onChange={addData} />
-                      </td>
-                    ))}
-                    <td>{state}</td>
-                    <td>grade here</td>
-                    <td>sign here</td>
-                  </tr>
+                {subjects2.map((x, i) => (
+                  // <tr key={x}>
+                  //   <th scope="row">{i + 1}</th>
+                  //   <td>{x}</td>
+                  //   {Array.from({ length: 4 }, (_, i) => (
+                  //     <td key={`content${i}`}>
+                  //       <input type="text" onChange={addData} />
+                  //     </td>
+                  //   ))}
+                  //   <td>{state}</td>
+                  //   <td>grade here</td>
+                  //   <td>sign here</td>
+                  // </tr>
+                  <MappedContent data={x} />
                 ))}
               </tbody>
             </table>
@@ -167,3 +168,26 @@ export default function Home() {
 //     </td>
 //   );
 // });
+
+const MappedContent = ({ data }) => {
+  const [state, setState] = useState(0);
+  const ref = useRef(null);
+
+  const getScore = (e) => {
+    console.log(ref.current.value);
+  };
+  return (
+    <tr key={`lol${data.name}`}>
+      <th scope="row">1</th>
+      <td>{data.name}</td>
+      {Array.from({ length: 4 }, (_, i) => (
+        <td key={i}>
+          <input ref={ref} value={0} type="text" onChange={getScore} />
+        </td>
+      ))}
+      <td>{state}</td>
+      <td>grade here</td>
+      <td>sign here</td>
+    </tr>
+  );
+};
