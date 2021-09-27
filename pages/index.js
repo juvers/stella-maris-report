@@ -99,19 +99,7 @@ export default function Home() {
               </thead>
               <tbody>
                 {subjects2.map((x, i) => (
-                  // <tr key={x}>
-                  //   <th scope="row">{i + 1}</th>
-                  //   <td>{x}</td>
-                  //   {Array.from({ length: 4 }, (_, i) => (
-                  //     <td key={`content${i}`}>
-                  //       <input type="text" onChange={addData} />
-                  //     </td>
-                  //   ))}
-                  //   <td>{state}</td>
-                  //   <td>grade here</td>
-                  //   <td>sign here</td>
-                  // </tr>
-                  <MappedContent data={x} />
+                  <MappedContent key={i} data={x} index={i} />
                 ))}
               </tbody>
             </table>
@@ -119,89 +107,23 @@ export default function Home() {
         </div>
       </div>
       <hr />
-      {/* <div className="container">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <table className="table table-bordered ">
-                          <thead className="table-light">
-                            <tr>
-                              <th scope="col"></th>
-                              <th scope="col" style={{ width: "20%" }}></th>
-                              <th scope="col">Project</th>
-                              <th scope="col">Weekly</th>
-                              <th scope="col">Notes</th>
-                              <th scope="col">First C.A.</th>
-                              <th scope="col">Total</th>
-                              <th scope="col">Grade</th>
-                              <th scope="col">Sign.</th>
-                            </tr>
-                          </thead>
-                          <thead>
-                            <tr>
-                              <th scope="col">S.No</th>
-                              <th scope="col" style={{ width: "20%" }}>
-                                Subject
-                              </th>
-                              <th scope="col">5</th>
-                              <th scope="col">3</th>
-                              <th scope="col">2</th>
-                              <th scope="col">10</th>
-                              <th scope="col">20</th>
-                              <th scope="col">A1 - F9</th>
-                              <th scope="col"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {subjects2.map((x, i) => (
-                              <tr key={`lol${x}`}>
-                                <th scope="row">{i + 1}</th>
-                                <td>{x.name}</td>
-                                {Array.from({ length: 4 }, (_, i) => (
-                                  <MapSubjects
-                                    ref={ref2}
-                                    key={`mapped ${x.name}`}
-                                    data={x}
-                                  />
-                                ))}
-                                <td>{state}</td>
-                                <td>grade here</td>
-                                <td>sign here</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                      {JSON.stringify(ref2)}
-                      <button onClick={() => console.log("Button clicked: ", ref2)}>
-                        Get State
-                      </button>
-                    </div>
-                  </div> */}
     </div>
   );
 }
 
-// eslint-disable-next-line react/display-name
-// const MapSubjects = forwardRef(({}, ref) => {
-//   const [state2, setState] = useState(5);
-//   const itemRef = useRef();
-//   useImperativeHandle(ref, () => ({
-//     state2,
-//   }));
-//   const getScore = () => {
-//     setState(() => state2 + Number(itemRef.current.firstChild.value));
-//     console.log("Val: ", Number(itemRef.current.firstChild.value));
-//   };
-//   // useEffect(() => console.log(itemRef.current.innerText), []);
-//   return (
-//     <td ref={itemRef}>
-//       <input type="text" onChange={getScore} />
-//     </td>
-//   );
-// });
-
-const MappedContent = ({ data }) => {
+const MappedContent = ({ data, index }) => {
   const lead = ["Project", "Weekly", "Notes", "FirstCA"];
+  const grades = [
+    { grade: "A1", lowerLimit: 19.2, upperLimit: 20, gradePoint: 9 },
+    { grade: "B2", lowerLimit: 18.2, upperLimit: 19.19, gradePoint: 8 },
+    { grade: "B3", lowerLimit: 17.2, upperLimit: 18.19, gradePoint: 7 },
+    { grade: "C4", lowerLimit: 16.2, upperLimit: 17.19, gradePoint: 6 },
+    { grade: "C5", lowerLimit: 15.2, upperLimit: 16.19, gradePoint: 5 },
+    { grade: "C6", lowerLimit: 14.2, upperLimit: 15.19, gradePoint: 4 },
+    { grade: "D7", lowerLimit: 13.2, upperLimit: 14.19, gradePoint: 3 },
+    { grade: "E8", lowerLimit: 12.2, upperLimit: 13.19, gradePoint: 2 },
+    { grade: "F9", lowerLimit: 0, upperLimit: 12.2, gradePoint: 1 },
+  ];
   const [state, setState] = useState({
     Project: 0,
     Weekly: 0,
@@ -211,24 +133,21 @@ const MappedContent = ({ data }) => {
   const ref = useRef(null);
   const [total, setTotal] = useState(0);
 
+  useEffect(() => {
+    const t = Object.values(state).reduce((acc, curr) => acc + curr, 0);
+    setTotal(t);
+  }, [state.FirstCA, state.Notes, state.Project, state.Weekly]);
   const getScore = ({ target }) => {
     const name = target.name;
     const value = Number(target.value);
     setState({ ...state, [name]: value });
-    const t = Object.values(state).reduce((acc, curr) => acc + curr, 0);
-    setTotal(t);
   };
   return (
     <tr key={`lol${data.name}`}>
-      <th scope="row"> 1 </th> <td> {data.name} </td>
-      {/* {Array.from({ length: 4 }, (_, i) => (
-        <td key={i}>
-          <input ref={ref} value={0} type="text" onChange={getScore} />
-        </td>
-      ))} */}
+      <th scope="row"> {index + 1} </th> <td> {data.name} </td>
       {lead.map((x, i) => (
         <td key={i}>
-          <input name={x} type="text" onChange={getScore} />
+          <input name={x} type="number" onChange={getScore} />
         </td>
       ))}
       <td> {total} </td> <td> grade here </td> <td> sign here </td>
